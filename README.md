@@ -61,7 +61,7 @@ Si les identifiants sont valides, le backend renvoie une response de type JSON :
 
 Ce retour contient :
 
-* Un token d’accès API (Bearer) pour les prochaines requêtes HTTPS
+* Un token d’accès API (Bearer) pour les prochaines requêtes HTTPS qui demande d'être authentifier pour certaines routes.
 * L’adresse publique de Quilkin :
   * DNS
   * Port UDP
@@ -69,24 +69,24 @@ Ce retour contient :
 À ce stade :
 
 * Le joueur est authentifié
+* Il stock côté client le : token, quilkin_dns, quilkin_port
 * Aucun GameServer n’est encore alloué
 
 ---
 
 # 2) Le joueur clique sur le boutton du mode de jeu "Play Solo"
 
-Quand le joueur appuie sur le mode de jeu **Play Solo** :
+Quand le joueur clique sur le mode de jeu **Play Solo** :
 
-Le client envoie une requête HTTPS au backend (une route avec un middleware auth ou le backend check si le token bearer est valide).
+Le client envoie une requête HTTPS au backend.
 
 Le backend AdonisJS :
-
-1. Vérifie si un GameServer est déjà alloué pour ce mode de jeu.
+0. Middleware auth ou le backend check si le token bearer est valide avant de continuer.
+1. Vérifie si un GameServer est déjà alloué pour ce mode de jeu, en regardant dans la base de donnée MariaDB.
 2. Si oui :
    * Réutilise ce GameServer TANT QUE : il reste de la place et que la partie n'as pas encore commencer.
-3. Sinon :
-   * Appelle le service `agones_allocator`.
-   * Alloue dynamiquement un GameServer dans la Fleet Agones.
+3. Sinon le backend AdonisJS :
+   * Appelle le service `agones_allocator` pour allouer dynamiquement un GameServer dans la Fleet Agones.
 
 ---
 
@@ -98,7 +98,6 @@ Lors de l’allocation, le backend génère **deux éléments critiques et uniqu
 * `udpEncryptionKeyBase64`
 
 Ces deux valeurs sont :
-
 * **Uniques par GameServer / match**
 * Générées à chaque nouvelle allocation d'un GameServer
 * Non réutilisées entre deux parties
@@ -122,7 +121,6 @@ Exemple de structure retournée par le service d’allocation :
 # 4) Pourquoi stocker ces données en base de donnée
 
 Le backend peut stocker en MariaDB :
-
 * ID du GameServer
 * matchTokenBase64
 * udpEncryptionKeyBase64
@@ -193,7 +191,7 @@ Quilkin :
 
 ---
 
-# 7) Rôle du udpEncryptionKeyBase64
+# 7) Rôle du udpEncryptionKeyBase64 (XChaCha20Poly1305)
 
 La clé de chiffrement UDP :
 
