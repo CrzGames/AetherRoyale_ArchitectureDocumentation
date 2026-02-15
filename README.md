@@ -34,8 +34,7 @@ Si le joueur n’a pas encore de compte, le client Unreal envoie une requête HT
 
 Le backend AdonisJS :
 * crée l’utilisateur dans MariaDB
-* hash automatiquement le mot de passe via le modèle User
-* prépare le compte pour la connexion
+* hash automatiquement le mot de passe en base de donnée
 
 Si l'inscription à réussi, le backend renvoie une response de type JSON :
 ```json
@@ -43,6 +42,8 @@ Si l'inscription à réussi, le backend renvoie une response de type JSON :
   message: 'Account created successfully'
 }
 ```
+
+Le client du jeu redirige automatiquement vers la "scène" : Login (après une inscription valide)
 
 <br /><br />
 
