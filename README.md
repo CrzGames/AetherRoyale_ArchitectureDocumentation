@@ -24,16 +24,20 @@ L’architecture est conçue pour être :
 ## Inscription (Sign Up)
 
 Si le joueur n’a pas encore de compte, le client Unreal envoie une requête HTTPS avec :
-
 * email
 * username
 * password
 
 Le backend AdonisJS :
-
 * crée l’utilisateur dans MariaDB
 * hash automatiquement le mot de passe via le modèle User
 * prépare le compte pour la connexion
+
+Si l'inscription à réussi, le backend renvoie une response de type JSON :
+```json
+{
+  message: 'Account created successfully'
+}
 
 ---
 
