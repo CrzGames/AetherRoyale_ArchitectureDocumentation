@@ -84,7 +84,7 @@ Ce retour contient :
 
 * Le joueur est authentifié
 * Côté client on stock le : token, quilkin_dns, quilkin_port
-* Le client du jeu est sur la "scène" : Menu
+* Le client du jeu redirige automatiquement vers la "scène" : Menu (après une connexion valide)
 
 <br /><br />
 
