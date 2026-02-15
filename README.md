@@ -75,7 +75,7 @@ Ce retour contient :
 
 # 2) Le joueur clique sur "Play Solo"
 
-Quand le joueur appuie sur **Play en solo** :
+Quand le joueur appuie sur le mode de jeu **Play en solo** :
 
 Le client envoie une requête HTTPS au backend (une route avec un middleware auth ou le backend check si le token bearer est valide).
 
@@ -83,7 +83,7 @@ Le backend AdonisJS :
 
 1. Vérifie si un GameServer est déjà alloué pour ce mode de jeu.
 2. Si oui :
-   * Réutilise ce GameServer (tant qu’il reste de la place) et qu'il n'as pas encore commencer.
+   * Réutilise ce GameServer TANT QUE : il reste de la place et que la partie n'as pas encore commencer.
 3. Sinon :
    * Appelle le service `agones_allocator`.
    * Alloue dynamiquement un GameServer dans la Fleet Agones.
@@ -110,7 +110,6 @@ Elles sont ensuite :
   * leur transmettre exactement les mêmes valeurs
 
 Exemple de structure retournée par le service d’allocation :
-
 ```ts
 {
   matchTokenBase64: string
@@ -132,8 +131,7 @@ Le backend peut stocker en MariaDB :
 
 Cela permet :
 
-* aux prochains joueurs qui cliquent sur "Play Solo" :
-
+* aux prochains joueurs qui cliquent sur le mode de jeu "Play en Solo" :
   * de rejoindre un GameServer existant
   * de recevoir le même token et la même clé
 * d’éviter d’allouer un nouveau serveur à chaque clic
@@ -181,7 +179,6 @@ Le `matchTokenBase64` :
 Flux :
 
 1. Le backend l’injecte dans :
-
    ```
    quilkin.dev/tokens
    ```
