@@ -17,7 +17,11 @@ L’architecture est conçue pour être :
 * **Temps réel** (WebSocket pour la coordination des matchs)
 * **Isolée par match** (token + clé uniques par GameServer)
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 1) Authentification du joueur (HTTPS)
 
@@ -38,8 +42,13 @@ Si l'inscription à réussi, le backend renvoie une response de type JSON :
 {
   message: 'Account created successfully'
 }
+```
+
+<br /<br />
 
 ---
+
+<br /<br />
 
 ## Connexion (Sign In)
 
@@ -76,7 +85,11 @@ Ce retour contient :
 * Il stock côté client le : token, quilkin_dns, quilkin_port
 * Aucun GameServer n’est encore alloué
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 2) Le joueur clique sur le boutton du mode de jeu "Play Solo"
 
@@ -92,7 +105,11 @@ Le backend AdonisJS :
 3. Sinon le backend AdonisJS :
    * Appelle le service `agones_allocator` pour allouer dynamiquement un GameServer dans la Fleet Agones.
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 3) Allocation du GameServer (Backend → Agones)
 
@@ -120,7 +137,11 @@ Exemple de structure retournée par le service d’allocation :
 }
 ```
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 4) Pourquoi stocker ces données en base de donnée
 
@@ -138,7 +159,11 @@ Cela permet :
   * de recevoir le même token et la même clé
 * d’éviter d’allouer un nouveau serveur à chaque clic
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 5) Transmission au client (WebSocket, pas HTTP)
 
@@ -168,7 +193,11 @@ Ce mécanisme permet :
 * d’éviter de relancer une allocation à chaque clic
 * de synchroniser plusieurs joueurs sur un même match
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 6) Rôle du matchTokenBase64
 
@@ -193,7 +222,11 @@ Quilkin :
 * Lit le token
 * Route vers le bon GameServer
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 7) Rôle du udpEncryptionKeyBase64 (XChaCha20Poly1305)
 
@@ -214,7 +247,11 @@ Ainsi :
 * Le client chiffre le payload UDP
 * Le GameServer le déchiffre avec la même clé
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 8) Format des paquets UDP
 
@@ -234,7 +271,11 @@ Chaque paquet envoyé par le client suit cette structure :
 
   * utilisé par Quilkin pour router le paquet
 
+<br /<br />
+
 ---
+
+<br /<br />
 
 # 9) Résumé global du flux
 
