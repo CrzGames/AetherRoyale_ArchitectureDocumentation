@@ -73,9 +73,9 @@ Ce retour contient :
 
 ---
 
-# 2) Le joueur clique sur "Play Solo"
+# 2) Le joueur clique sur le boutton du mode de jeu "Play Solo"
 
-Quand le joueur appuie sur le mode de jeu **Play en solo** :
+Quand le joueur appuie sur le mode de jeu **Play Solo** :
 
 Le client envoie une requête HTTPS au backend (une route avec un middleware auth ou le backend check si le token bearer est valide).
 
@@ -131,7 +131,7 @@ Le backend peut stocker en MariaDB :
 
 Cela permet :
 
-* aux prochains joueurs qui cliquent sur le mode de jeu "Play en Solo" :
+* aux prochains joueurs qui cliquent sur le mode de jeu "Play Solo" :
   * de rejoindre un GameServer existant
   * de recevoir le même token et la même clé
 * d’éviter d’allouer un nouveau serveur à chaque clic
