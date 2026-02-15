@@ -98,11 +98,11 @@ Quand le joueur clique sur le mode de jeu **Play Solo** :
 Le client envoie une requête HTTPS au backend.
 
 Le backend AdonisJS :
-0. Middleware auth ou le backend check si le token bearer est valide avant de continuer.
-1. Vérifie si un GameServer est déjà alloué pour ce mode de jeu, en regardant dans la base de donnée MariaDB.
-2. Si oui :
+1. Middleware auth ou le backend check si le token bearer est valide avant de continuer.
+2. Vérifie si un GameServer est déjà alloué pour ce mode de jeu, en regardant dans la base de donnée MariaDB.
+3. Si oui :
    * Réutilise ce GameServer TANT QUE : il reste de la place et que la partie n'as pas encore commencer.
-3. Sinon le backend AdonisJS :
+4. Sinon le backend AdonisJS :
    * Appelle le service `agones_allocator` pour allouer dynamiquement un GameServer dans la Fleet Agones.
 
 <br /><br />
