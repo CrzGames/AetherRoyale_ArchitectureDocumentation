@@ -82,7 +82,7 @@ Ce retour contient :
 À ce stade :
 
 * Le joueur est authentifié
-* Il stock côté client le : token, quilkin_dns, quilkin_port
+* Côté client on stock le : token, quilkin_dns, quilkin_port
 * Aucun GameServer n’est encore alloué
 
 <br /><br />
