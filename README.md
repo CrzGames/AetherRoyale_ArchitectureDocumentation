@@ -4,10 +4,10 @@
 
 Ce document décrit le flux complet entre le client Unreal Engine, le backend AdonisJS, Agones et Quilkin pour :
 
-* authentifier un joueur en HTTPS
+* authentifier/inscrir un joueur en HTTPS
 * allouer dynamiquement un GameServer
 * sécuriser la communication UDP
-* router correctement les paquets vers le bon serveur
+* router correctement les paquets UDP vers le bon serveur
 * notifier les joueurs en temps réel via WebSocket
 
 L’architecture est conçue pour être :
@@ -43,7 +43,7 @@ Si l'inscription à réussi, le backend renvoie une response de type JSON :
 }
 ```
 
-Le client du jeu redirige automatiquement vers la "scène" : Login (après une inscription valide)
+Le client du jeu redirige automatiquement vers la "scène" : Login (après une inscription valide, pour qu'il se connecte)
 
 <br /><br />
 
@@ -115,9 +115,8 @@ Le backend AdonisJS :
 # 3) Allocation du GameServer (Backend → Agones)
 
 Lors de l’allocation, le backend génère **deux éléments critiques et uniques** pour ce match :
-
-* `matchTokenBase64`
-* `udpEncryptionKeyBase64`
+* `matchTokenBase64` (token de routage Quilkin, 16 bytes aléatoires encodés en base64)
+* `udpEncryptionKeyBase64` (clé symétrique XChaCha20-Poly1305, 32 bytes, encodée en base64, utilisée pour chiffrer les paquets UDP client ↔ GameServer)
 
 Ces deux valeurs sont :
 * **Uniques par GameServer / match**
@@ -130,7 +129,7 @@ Elles sont ensuite :
   * permettre à d’autres joueurs de rejoindre le même match
   * leur transmettre exactement les mêmes valeurs
 
-Exemple de structure retournée par le service d’allocation :
+Exemple de structure retournée par le service : agones_allocation :
 ```ts
 {
   matchTokenBase64: string
