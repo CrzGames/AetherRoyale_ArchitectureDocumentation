@@ -45,10 +45,10 @@ Le client envoie une requête HTTPS avec :
   ou
 * username/password
 
-Si les identifiants sont valides, le backend renvoie :
+Si les identifiants sont valides, le backend renvoie une response de type JSON :
 
-```ts
-export interface LoginSuccessResponseBody {
+```json
+{
   token: {
     type: 'bearer'
     value: string
@@ -63,7 +63,6 @@ Ce retour contient :
 
 * Un token d’accès API (Bearer) pour les prochaines requêtes HTTPS
 * L’adresse publique de Quilkin :
-
   * DNS
   * Port UDP
 
@@ -78,16 +77,14 @@ Ce retour contient :
 
 Quand le joueur appuie sur **Play en solo** :
 
-Le client envoie une requête HTTPS authentifiée au backend.
+Le client envoie une requête HTTPS au backend (une route avec un middleware auth ou le backend check si le token bearer est valide).
 
 Le backend AdonisJS :
 
-1. Vérifie si un GameServer est déjà alloué pour ce match/session.
+1. Vérifie si un GameServer est déjà alloué pour ce mode de jeu.
 2. Si oui :
-
-   * Réutilise ce GameServer (tant qu’il reste de la place).
+   * Réutilise ce GameServer (tant qu’il reste de la place) et qu'il n'as pas encore commencer.
 3. Sinon :
-
    * Appelle le service `agones_allocator`.
    * Alloue dynamiquement un GameServer dans la Fleet Agones.
 
@@ -103,21 +100,19 @@ Lors de l’allocation, le backend génère **deux éléments critiques et uniqu
 Ces deux valeurs sont :
 
 * **Uniques par GameServer / match**
-* Générées à chaque nouvelle allocation
+* Générées à chaque nouvelle allocation d'un GameServer
 * Non réutilisées entre deux parties
 
 Elles sont ensuite :
-
 * Injectées dans les annotations Kubernetes du GameServer via Agones
-* Stockées côté backend (ex: MariaDB) afin de :
-
+* Stockées côté base de donnée (MariaDB) afin de :
   * permettre à d’autres joueurs de rejoindre le même match
   * leur transmettre exactement les mêmes valeurs
 
 Exemple de structure retournée par le service d’allocation :
 
 ```ts
-export interface AllocationSecurityData {
+{
   matchTokenBase64: string
   udpEncryptionKeyBase64: string
 }
@@ -125,7 +120,7 @@ export interface AllocationSecurityData {
 
 ---
 
-# 4) Pourquoi stocker ces données en base
+# 4) Pourquoi stocker ces données en base de donnée
 
 Le backend peut stocker en MariaDB :
 
@@ -133,7 +128,7 @@ Le backend peut stocker en MariaDB :
 * matchTokenBase64
 * udpEncryptionKeyBase64
 * nombre de joueurs
-* état du match
+* état du match (partie déjà commencer ou non)
 
 Cela permet :
 
