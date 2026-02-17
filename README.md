@@ -56,8 +56,6 @@ Le client du jeu redirige automatiquement vers la "scène" : Login (après une i
 Le client envoie une requête HTTPS avec :
 
 * email/password
-  ou
-* username/password
 
 Si les identifiants sont valides, le backend renvoie une response de type JSON :
 
@@ -83,7 +81,7 @@ Ce retour contient :
 À ce stade :
 
 * Le joueur est authentifié
-* Côté client on stock le : token, quilkin_dns, quilkin_port
+* Côté client on stock le : token d’accès API (Bearer), quilkin_dns, quilkin_port
 * Le client du jeu redirige automatiquement vers la "scène" : Menu (après une connexion valide)
 
 <br /><br />
@@ -92,15 +90,17 @@ Ce retour contient :
 
 <br /><br />
 
-# 2) Le joueur clique sur le boutton du mode de jeu "Play Solo"
+# 2) Le joueur selectionne dans la scène "Menu" du jeu, par exemple le mode "Solo non classé", puis clique sur "Recherche une partie.."
 
-Quand le joueur clique sur le mode de jeu **Play Solo** :
-
-Le client envoie une requête HTTPS au backend.
+Le client envoie une requête HTTPS au backend :
+- Route POST /matchmaking/join
+- Body :
+  - queue_type (ranked ou unranked)
+  - team_size (1/2/4)
 
 Le backend AdonisJS :
 1. Middleware auth ou le backend check si le token bearer est valide avant de continuer.
-2. Vérifie si un GameServer est déjà alloué pour ce mode de jeu, en regardant dans la base de donnée MariaDB.
+2. Vérifie si un GameServer est déjà alloué pour ce mode de jeu, en regardant dans la base de donnée Redis.
 3. Si oui :
    * Réutilise ce GameServer TANT QUE : il reste de la place et que la partie n'as pas encore commencer.
 4. Sinon le backend AdonisJS :
