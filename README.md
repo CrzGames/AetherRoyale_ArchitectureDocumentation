@@ -55,12 +55,13 @@ Le client du jeu redirige automatiquement vers la "scène" : Login (après une i
 
 ## Connexion (Sign In)
 
-Le client envoie une requête HTTPS avec :
-
-* email/password
+Le client envoie une requête HTTPS :
+- Route : POST /auth/sign-in
+- Body :
+  * email
+  * password
 
 Si les identifiants sont valides, le backend renvoie une response de type JSON :
-
 ```json
 {
   token: {
