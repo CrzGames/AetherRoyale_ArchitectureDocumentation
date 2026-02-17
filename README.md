@@ -93,7 +93,7 @@ Ce retour contient :
 
 <br /><br />
 
-# 2) Le joueur coche "Ranked" ou "Non Ranked", puis selectionne le mode de jeu dans la liste par exemple "Solo non classé", puis clique sur "Rechercher une partie..."
+# 2) Le joueur coche "Ranked" ou "Non Ranked", puis selectionne le mode de jeu dans la liste par exemple "Solo", puis clique sur "Rechercher une partie..."
 
 Le client envoie une requête HTTPS au backend :
 - Route POST /matchmaking/join
