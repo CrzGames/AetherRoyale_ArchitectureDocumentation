@@ -93,7 +93,7 @@ Ce retour contient :
 
 <br /><br />
 
-# 2) Le joueur selectionne dans la scène "Menu" du jeu, par exemple le mode "Solo non classé", puis clique sur "Recherche une partie.."
+# 2) Le joueur clique sur le boutton du mode "Solo non classé", puis clique sur "Rechercher une partie.."
 
 Le client envoie une requête HTTPS au backend :
 - Route POST /matchmaking/join
